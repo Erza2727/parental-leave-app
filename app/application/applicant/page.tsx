@@ -1,24 +1,25 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useFormContext } from 'react-hook-form'
-import { applicantSchema } from '@/lib/schemas/applicantSchema'
-import { ApplicationFormData } from '@/lib/types/application'
+import { Path, useFormContext } from 'react-hook-form'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
+import { applicantSchema } from '@/lib/schemas/applicantSchema'
+import { ApplicationFormData } from '@/lib/types/application'
 
 export default function ApplicantPage() {
   const router = useRouter()
 
   const {
     register,
-    trigger,
     getValues,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useFormContext<ApplicationFormData>()
 
   const handleNext = async () => {
-    const isValid = await trigger([
+    clearErrors([
       'applicant.fullName',
       'applicant.kennitala',
       'applicant.address',
@@ -26,11 +27,36 @@ export default function ApplicantPage() {
       'applicant.phone',
     ])
 
-    const parsed = applicantSchema.safeParse({
-      applicant: getValues('applicant'),
-    })
+    const values = {
+      applicant: {
+        fullName: getValues('applicant.fullName').trim(),
+        kennitala: getValues('applicant.kennitala').trim(),
+        address: getValues('applicant.address').trim(),
+        email: getValues('applicant.email').trim(),
+        phone: getValues('applicant.phone').trim(),
+      },
+    }
 
-    if (!isValid || !parsed.success) {
+    const result = applicantSchema.safeParse(values)
+
+    if (!result.success) {
+      for (const issue of result.error.issues) {
+        const path = issue.path.join('.')
+
+        if (
+          path === 'applicant.fullName' ||
+          path === 'applicant.kennitala' ||
+          path === 'applicant.address' ||
+          path === 'applicant.email' ||
+          path === 'applicant.phone'
+        ) {
+          setError(path as Path<ApplicationFormData>, {
+            type: 'manual',
+            message: issue.message,
+          })
+        }
+      }
+
       return
     }
 
@@ -45,7 +71,7 @@ export default function ApplicantPage() {
           Applicant Information
         </h2>
         <p className="text-sm text-slate-600">
-          Enter the applicant’s personal details to begin the application.
+          Enter the applicant&apos;s personal details to begin the application.
         </p>
       </div>
 
@@ -65,7 +91,11 @@ export default function ApplicantPage() {
           inputMode="numeric"
           maxLength={10}
           error={errors.applicant?.kennitala?.message}
-          {...register('applicant.kennitala')}
+          {...register('applicant.kennitala', {
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10)
+            },
+          })}
         />
 
         <div className="sm:col-span-2">
@@ -94,7 +124,11 @@ export default function ApplicantPage() {
           inputMode="numeric"
           maxLength={7}
           error={errors.applicant?.phone?.message}
-          {...register('applicant.phone')}
+          {...register('applicant.phone', {
+            onChange: (e) => {
+              e.target.value = e.target.value.replace(/\D/g, '').slice(0, 7)
+            },
+          })}
         />
       </div>
 
