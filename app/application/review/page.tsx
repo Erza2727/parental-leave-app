@@ -39,19 +39,21 @@ export default function ReviewPage() {
 
   return (
     <section className="space-y-8">
-      <div>
+      <div className="flex justify-between items-center">
         <p className="text-sm text-slate-600">Step 7 of 7</p>
-        <h2 className="text-2xl font-semibold">Review & Submit</h2>
+        <h2 className="text-2xl font-semibold text-slate-900">
+          Review & Submit
+        </h2>
       </div>
 
       {/* 1 applicant */}
-      <div className="space-y-2">
-        <h3 className="font-medium">Applicant</h3>
-        <p>{data.applicant.fullName}</p>
-        <p>{data.applicant.kennitala}</p>
-        <p>{data.applicant.address}</p>
-        <p>{data.applicant.email}</p>
-        <p>{data.applicant.phone}</p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="font-semibold text-slate-900">Applicant</h3>
+        <p className="text-slate-600">{data.applicant.fullName}</p>
+        <p className="text-slate-600">{data.applicant.kennitala}</p>
+        <p className="text-slate-600">{data.applicant.address}</p>
+        <p className="text-slate-600">{data.applicant.email}</p>
+        <p className="text-slate-600">{data.applicant.phone}</p>
 
         <button
           onClick={() => router.push("/application/applicant")}
@@ -62,20 +64,22 @@ export default function ReviewPage() {
       </div>
 
       {/* 2 employment */}
-      <div className="space-y-2">
-        <h3 className="font-medium">Employment</h3>
-        <p>{data.employment.type}</p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="font-semibold text-slate-900">Employment</h3>
+        <p className="text-slate-600">{data.employment.type}</p>
 
         {data.employment.type === "employed" && (
           <>
-            <p>{data.employment.employerName}</p>
-            <p>{data.employment.employmentRatio}%</p>
+            <p className="text-slate-600">{data.employment.employerName}</p>
+            <p className="text-slate-600">{data.employment.employmentRatio}%</p>
           </>
         )}
 
         {data.employment.type === "self-employed" && (
           <>
-            <p>company: {data.employment.companyName}</p>
+            <p className="text-slate-600">
+              company: {data.employment.companyName}
+            </p>
           </>
         )}
 
@@ -88,15 +92,15 @@ export default function ReviewPage() {
       </div>
 
       {/* 3 partner */}
-      <div className="space-y-2">
-        <h3 className="font-medium">Partner</h3>
-        <p>{data.partner.hasPartner}</p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="font-semibold text-slate-900">Partner</h3>
+        <p className="text-slate-600">{data.partner.hasPartner}</p>
 
         {data.partner.hasPartner && (
           <>
-            <p>{data.partner.fullName}</p>
-            <p>{data.partner.kennitala}</p>
-            <p>{data.partner.employmentStatus}</p>
+            <p className="text-slate-600">{data.partner.fullName}</p>
+            <p className="text-slate-600">{data.partner.kennitala}</p>
+            <p className="text-slate-600">{data.partner.employmentStatus}</p>
           </>
         )}
 
@@ -109,9 +113,9 @@ export default function ReviewPage() {
       </div>
 
       {/* 4 leave */}
-      <div className="space-y-2">
-        <h3 className="font-medium">Leave Period</h3>
-        <p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="font-semibold text-slate-900">Leave Period</h3>
+        <p className="text-slate-600">
           {data.leave.startDate
             ? new Date(data.leave.startDate).toLocaleDateString()
             : "Not set"}{" "}
@@ -131,11 +135,11 @@ export default function ReviewPage() {
       </div>
 
       {/* 5 payment */}
-      <div className="space-y-2">
-        <h3 className="font-medium">Payment Info</h3>
-        <p>{data.payment.bankNumber}</p>
-        <p>{data.payment.ledger}</p>
-        <p>{data.payment.accountNumber}</p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="font-semibold text-slate-900">Payment Info</h3>
+        <p className="text-slate-600">{data.payment.bankNumber}</p>
+        <p className="text-slate-600">{data.payment.ledger}</p>
+        <p className="text-slate-600">{data.payment.accountNumber}</p>
 
         <button
           onClick={() => router.push("/application/payment")}
@@ -146,11 +150,13 @@ export default function ReviewPage() {
       </div>
 
       {/* 6 Documents */}
-      <div className="space-y-2">
-        <h3 className="font-medium">Documents</h3>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="font-semibold text-slate-900">Documents</h3>
 
         {data.documents.files?.map((file, i) => (
-          <p key={i}>{file.name}</p>
+          <p className="text-slate-600" key={i}>
+            {file.name}
+          </p>
         ))}
 
         <button
