@@ -28,7 +28,7 @@ export default function ReviewPage() {
       }
 
       const id = crypto.randomUUID(); // simulate returned application ID
-      router.push(`/application/confirmation/${id}`);
+      router.push(`/application/confirmation?id=${id}`);
     } catch (err) {
       setError((err as Error).message);
       setLoading(false);
